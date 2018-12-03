@@ -1,0 +1,18 @@
+events {}
+
+http {
+
+    upstream load_balancers {
+    {% for i in server_num %}
+        server load_balancer_{{ i }}:8080;
+    {% endfor %}
+    }
+
+    server {
+        listen 80;
+
+        location / {
+            proxy_pass http://load_balancers;
+        }
+    }
+}
